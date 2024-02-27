@@ -1,40 +1,26 @@
 {
   "name": "gatsby-starter-default",
-  "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
-  "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
-    "gatsby": "^5.13.3",
-    "gatsby-plugin-image": "^3.13.1",
-    "gatsby-plugin-manifest": "^5.13.1",
-    "gatsby-plugin-sharp": "^5.13.1",
-    "gatsby-source-filesystem": "^5.13.1",
-    "gatsby-transformer-sharp": "^5.13.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@11ty/eleventy": "2.0.1",
+    "@11ty/eleventy-img": "2.0.0",
+    "archiver": "^5.2.0",
+    "extract-zip": "^2.0.1",
+    "lodash.chunk": "^4.2.0",
+    "lodash.get": "^4.4.2",
+    "fs-extra": "^9.1.0",
+    "fuse.js": "^6.4.6",
+    "node-fetch": "^2.6.1"
+  },
+  "scripts": {
+    "optimize": "node ./_utils/scripts/optimize-assets.js",
+    "preserve": "npm run optimize",
+    "prebuild": "npm run optimize",
+    "serve": "gatsby serve",
+    "build": "gatsby build",
+    "local-backend": "npx netlify-cms-proxy-server"
   },
   "devDependencies": {
-    "prettier": "^2.8.8"
-  },
-  "keywords": [
-    "gatsby"
-  ],
-  "license": "0BSD",
-  "scripts": {
-    "build": "gatsby build",
-    "develop": "gatsby develop",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,css}\"",
-    "start": "gatsby develop",
-    "serve": "gatsby serve",
-    "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
-  },
-  "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "date-fns": "2.16.1",
+    "html-minifier": "4.0.0"
   }
 }

@@ -1,0 +1,1667 @@
+backend:
+  name: git-gateway
+  accept_roles:
+    - admin
+    - editor
+  branch: master
+media_folder: theme/assets/images
+public_folder: /assets/images
+collections:
+  - name: pages
+    label: Pages
+    identifier_field: title
+    extension: md
+    create: false
+    delete: false
+    slug: '{{slug}}'
+    editor: &ref_0
+      preview: false
+    folder: cms/pages
+    fields: &ref_1
+      - label: Title
+        name: title
+        widget: string
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '{{slug}}.html'
+      - &ref_2
+        label: Seo
+        name: seo
+        widget: object
+        collapsed: true
+        fields:
+          - label: Title
+            name: title
+            widget: string
+            required: false
+          - label: Description
+            name: description
+            widget: string
+            required: false
+          - label: No index
+            name: noindex
+            widget: boolean
+            default: false
+            required: false
+          - label: Open Graph Title
+            name: og:title
+            widget: string
+            required: false
+          - label: Open Graph Image
+            name: og:image
+            widget: image
+            required: false
+            media_library:
+              config:
+                multiple: false
+          - label: Twitter Title
+            name: twitter:title
+            widget: string
+            default: summary
+            required: false
+          - label: Twitter Card
+            name: twitter:card
+            widget: string
+            default: summary
+            required: false
+          - label: Twitter Site
+            name: twitter:site
+            widget: string
+            required: false
+          - label: Twitter Creator
+            name: twitter:creator
+            widget: string
+            required: false
+          - label: Twitter Image
+            name: twitter:image
+            widget: image
+            required: false
+            media_library:
+              config:
+                multiple: false
+          - label: Additional HTML tags
+            name: additional_tags
+            widget: text
+            required: false
+  - name: pages-template
+    label: Pages template
+    identifier_field: title
+    extension: md
+    create: false
+    delete: false
+    slug: '{{slug}}'
+    editor: *ref_0
+    folder: cms/pages/template
+    fields: *ref_1
+  - name: nutrition_categories
+    label: Nutrition Categories
+    folder: cms/nutrition-categories
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: nutrition-categories
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[nutrition-categories].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_2
+  - name: recipes
+    label: Recipes
+    folder: cms/recipes
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - label: Recipe Instructions
+        name: body
+        widget: markdown
+        required: false
+      - hint: Will be shown on top of the Recipe page.
+        name: f_subtitle
+        label: Subtitle
+        widget: string
+        required: false
+      - hint: ''
+        name: f_recipe-image
+        label: Recipe Image
+        widget: list
+        required: false
+        fields:
+          - hint: ''
+            name: url
+            label: Image
+            widget: image
+            required: false
+            allow_multiple: false
+          - hint: Image Alt
+            name: alt
+            label: alt
+            widget: string
+            required: false
+      - hint: ''
+        name: f_for-how-many-persons-is-this-recipe
+        label: For how many persons is this recipe?
+        widget: select
+        required: false
+        options:
+          - label: '1'
+            value: '1'
+          - label: '2'
+            value: '2'
+          - label: '3'
+            value: '3'
+          - label: '4'
+            value: '4'
+          - label: '5'
+            value: '5'
+          - label: '6'
+            value: '6'
+          - label: '7'
+            value: '7'
+          - label: '8'
+            value: '8'
+      - hint: ''
+        name: f_preparation-time
+        label: Preparation time?
+        widget: string
+        required: false
+      - hint: ''
+        name: f_cook-time
+        label: Cook Time
+        widget: string
+        required: false
+      - hint: ''
+        name: f_calories
+        label: Calories
+        widget: string
+        required: false
+      - hint: If this recipe has a video, insert URL here.
+        name: f_video-recipe
+        label: Video Recipe
+        widget: object
+        required: false
+        fields:
+          - hint: ''
+            name: url
+            label: Url
+            widget: string
+            required: false
+      - hint: ''
+        name: f_ingredients
+        label: Ingredients
+        widget: markdown
+        required: false
+      - hint: Use lists for the kitchenware.
+        name: f_needed-kitchenware
+        label: Needed Kitchenware
+        widget: markdown
+        required: false
+      - hint: Details on the nutrition, calorie count, allergies, etc.
+        name: f_nutritional-info
+        label: Nutritional Info
+        widget: markdown
+        required: false
+      - hint: Will be shown on "favorites" page and in "favorites" footer column.
+        name: f_favorite
+        label: Favorite?
+        widget: boolean
+        required: false
+        default: false
+      - hint: Will be shown on the homepage.
+        name: f_featured-recipe
+        label: Featured Recipe
+        widget: boolean
+        required: false
+        default: false
+      - hint: Select a cook.
+        name: f_authors
+        label: Authors
+        widget: relation
+        required: false
+        collection: authors
+        value_field: cms/authors/{{slug}}.md
+        search_fields:
+          - slug
+          - name
+        display_fields:
+          - title
+        multiple: false
+      - hint: >-
+          For filtering on recipe and blog selection pages - Must at least match
+          Meal and Nutrition Categories
+        name: f_tags
+        label: Filter Tags
+        widget: relation
+        required: false
+        collection: tags
+        value_field: cms/tags/{{slug}}.md
+        search_fields:
+          - slug
+          - name
+        display_fields:
+          - title
+        multiple: true
+      - hint: For appearing on recipe card, helps user know primary meal for recipe
+        name: f_category
+        label: Meal Category
+        widget: relation
+        required: false
+        collection: categories
+        value_field: cms/categories/{{slug}}.md
+        search_fields:
+          - slug
+          - name
+        display_fields:
+          - title
+        multiple: false
+      - hint: Primary category for appearance on tag page
+        name: f_nutrition-category-2
+        label: Nutrition Category
+        widget: relation
+        required: false
+        collection: nutrition_categories
+        value_field: cms/nutrition-categories/{{slug}}.md
+        search_fields:
+          - slug
+          - name
+        display_fields:
+          - title
+        multiple: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: recipes
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[recipes].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_2
+  - name: categories
+    label: Meal Categories
+    folder: cms/categories
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - hint: Shows on cards, header of page
+        name: f_page-header-image
+        label: Page Header Image
+        widget: object
+        required: false
+        fields:
+          - hint: ''
+            name: url
+            label: Image
+            widget: image
+            required: false
+            allow_multiple: false
+          - hint: Image Alt
+            name: alt
+            label: alt
+            widget: string
+            required: false
+      - hint: Will be shown on the homepage
+        name: f_popular-category
+        label: Popular Category
+        widget: boolean
+        required: false
+        default: false
+      - hint: Color of category
+        name: f_color
+        label: Color
+        widget: color
+        required: false
+        enableAlpha: true
+        allowInput: true
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: categories
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[categories].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_2
+  - name: tags
+    label: Filter Tags
+    folder: cms/tags
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: tags
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[tags].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_2
+  - name: blog_posts
+    label: Blog Posts
+    folder: cms/blog-posts
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - label: Blog Post Text
+        name: body
+        widget: markdown
+        required: false
+      - hint: Posted at the top of the page
+        name: f_blog-post-image
+        label: Blog Post Image
+        widget: object
+        required: false
+        fields:
+          - hint: ''
+            name: url
+            label: Image
+            widget: image
+            required: false
+            allow_multiple: false
+          - hint: Image Alt
+            name: alt
+            label: alt
+            widget: string
+            required: false
+      - hint: Subtitle summary of article
+        name: f_subtitle
+        label: Subtitle
+        widget: text
+        required: false
+      - hint: Choose the author
+        name: f_author
+        label: Author
+        widget: relation
+        required: false
+        collection: authors
+        value_field: cms/authors/{{slug}}.md
+        search_fields:
+          - slug
+          - name
+        display_fields:
+          - title
+        multiple: false
+      - hint: >-
+          These are used for filtering on selection pages - Must at least match
+          Meal and Categories
+        name: f_tags
+        label: Filter Tags
+        widget: relation
+        required: false
+        collection: tags
+        value_field: cms/tags/{{slug}}.md
+        search_fields:
+          - slug
+          - name
+        display_fields:
+          - title
+        multiple: true
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: blog-posts
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[blog-posts].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_2
+  - name: authors
+    label: Authors
+    folder: cms/authors
+    create: true
+    identifier_field: name
+    extension: md
+    slug: '{{slug}}'
+    fields:
+      - hint: ''
+        name: title
+        label: Name
+        widget: string
+        required: true
+      - hint: ''
+        name: created-on
+        label: Created On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: updated-on
+        label: Updated On
+        widget: datetime
+        required: false
+      - hint: ''
+        name: published-on
+        label: Published On
+        widget: datetime
+        required: false
+      - label: Biography
+        name: body
+        widget: markdown
+        required: false
+      - hint: Will be shown on Cook page header.
+        name: f_subtitle
+        label: Subtitle
+        widget: string
+        required: false
+      - hint: ''
+        name: f_portrait-image
+        label: Portrait image
+        widget: object
+        required: false
+        fields:
+          - hint: ''
+            name: url
+            label: Image
+            widget: image
+            required: false
+            allow_multiple: false
+          - hint: Image Alt
+            name: alt
+            label: alt
+            widget: string
+            required: false
+      - label: Tags
+        widget: hidden
+        name: tags
+        default: authors
+      - label: Layout
+        widget: hidden
+        name: layout
+        default: '[authors].html'
+      - label: Publish Date
+        name: date
+        widget: datetime
+      - *ref_2
+  - label: Theme Settings
+    name: settings
+    identifier_field: title
+    extension: json
+    create: false
+    delete: false
+    slug: '{{slug}}'
+    editor:
+      preview: false
+    files:
+      - label: General
+        name: site
+        file: cms/_data/settings/site.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: General
+          - hint: Full domain url (needed for a correct sitemap file)
+            name: domain
+            label: Domain
+            widget: string
+            required: false
+          - name: favicon
+            label: Favicon
+            widget: image
+            allow_multiple: false
+            required: false
+          - name: apple_touch_icon
+            label: Apple Touch Icon
+            widget: image
+            allow_multiple: false
+            required: false
+          - name: header_additional_content
+            label: Additional Content Header
+            hint: Content here will be placed before </head> tag
+            widget: text
+            required: false
+          - name: footer_additional_content
+            label: Additional Content Footer
+            hint: Content here will be placed before </body> tag
+            widget: text
+            required: false
+          - name: images_optimization
+            label: Images Optimization
+            widget: object
+            collapsed: false
+            fields:
+              - label: Image Formats
+                name: formats
+                widget: select
+                multiple: true
+                options:
+                  - label: Avif
+                    value: avif
+                  - label: Webp
+                    value: webp
+              - label: Image Dimensions
+                name: dimensions
+                widget: select
+                multiple: true
+                options:
+                  - label: '500'
+                    value: 500
+                  - label: '800'
+                    value: 800
+                  - label: '1080'
+                    value: 1080
+                  - label: '1600'
+                    value: 1600
+                  - label: '2000'
+                    value: 2000
+                  - label: '2600'
+                    value: 2600
+      - label: Colors
+        name: colors
+        file: cms/_data/colors.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: Colors
+      - label: Texts
+        name: texts
+        file: cms/_data/texts.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: Texts
+          - hint: 'Original text: About, key: 3c2336d'
+            label: Text
+            name: 3c2336d
+            widget: string
+          - hint: 'Original text: Blog, key: 1fa3c2'
+            label: Text
+            name: 1fa3c2
+            widget: string
+          - hint: 'Original text: Recipes, key: -5c430b7b'
+            label: Text
+            name: '-5c430b7b'
+            widget: string
+          - hint: 'Original text: Contact, key: -64104400'
+            label: Text
+            name: '-64104400'
+            widget: string
+          - hint: >-
+              Original text: Welcome to Thriving Littleys Recipe Blog, key:
+              11691846
+            label: Text
+            name: '11691846'
+            widget: string
+          - hint: >-
+              Original text: Welcome to Thriving Littleys, where delicious meets
+              nutritious in every bite! Our vibrant community is dedicated to
+              empowering parents and caregivers with creative, wholesome recipes
+              that will tantalize even the pickiest of young palates. At
+              Thriving Littleys, we believe in the power of food to nourish both
+              body and mind, and we're passionate about making healthy eating
+              fun and accessible for families everywhere. Whether you're seeking
+              quick meal ideas, allergy-friendly options, or just some
+              inspiration to get your little ones excited about veggies, you'll
+              find a treasure trove of flavorful recipes, helpful tips, and
+              heartfelt stories here. Join us on our journey to raise happy,
+              healthy kids, one bite at a time!, key: -7c77fbf1
+            label: Text
+            name: '-7c77fbf1'
+            widget: text
+          - hint: 'Original text: See Our Recipes Now!, key: -77fd2c59'
+            label: Text
+            name: '-77fd2c59'
+            widget: string
+          - hint: 'Original text: Featured Recipes, key: -7884554d'
+            label: Text
+            name: '-7884554d'
+            widget: string
+          - hint: >-
+              Original text: Lorem ipsum dolor sit amet, consectetur adipiscing
+              elit. Suspendisse varius enim in eros elementum tristique, key:
+              -573d4687
+            label: Text
+            name: '-573d4687'
+            widget: text
+          - hint: 'Original text: Featured Recipe, key: -5eb9f240'
+            label: Text
+            name: '-5eb9f240'
+            widget: string
+          - hint: 'Original text: No items found., key: 3d503d2b'
+            label: Text
+            name: 3d503d2b
+            widget: string
+          - hint: 'Original text: Meal Categories, key: 22c63699'
+            label: Text
+            name: 22c63699
+            widget: string
+          - hint: 'Original text: View All Recipes, key: -629523f5'
+            label: Text
+            name: '-629523f5'
+            widget: string
+          - hint: 'Original text: Popular Recipes, key: -1815ade2'
+            label: Text
+            name: '-1815ade2'
+            widget: string
+          - hint: 'Original text: See All Recipes, key: 5858bc79'
+            label: Text
+            name: 5858bc79
+            widget: string
+          - hint: 'Original text: Latest From The Blog, key: -200772f2'
+            label: Text
+            name: '-200772f2'
+            widget: string
+          - hint: 'Original text: Published on: , key: -1a89c7a9'
+            label: Text
+            name: '-1a89c7a9'
+            widget: string
+          - hint: 'Original text: Stay Updated!, key: -726a4753'
+            label: Text
+            name: '-726a4753'
+            widget: string
+          - hint: >-
+              Original text: Thank you! Your submission has been received!, key:
+              5a0ea5a1
+            label: Text
+            name: 5a0ea5a1
+            widget: string
+          - hint: >-
+              Original text: Oops! Something went wrong while submitting the
+              form., key: -7c112e99
+            label: Text
+            name: '-7c112e99'
+            widget: string
+          - hint: 'Original text: Categories, key: -3be6ddc4'
+            label: Text
+            name: '-3be6ddc4'
+            widget: string
+          - hint: 'Original text: Favorites, key: d098a37'
+            label: Text
+            name: d098a37
+            widget: string
+          - hint: 'Original text: Recently Added, key: 5f697c08'
+            label: Text
+            name: 5f697c08
+            widget: string
+          - hint: 'Original text: Copyright © , key: 318803b0'
+            label: Text
+            name: 318803b0
+            widget: string
+          - hint: 'Original text: JonMarkLarson.com, key: 30ab2d9e'
+            label: Text
+            name: 30ab2d9e
+            widget: string
+          - hint: >-
+              Original text: Content is for demonstration only - Sources, key:
+              cdb5c08
+            label: Text
+            name: cdb5c08
+            widget: string
+          - hint: 'Original text: About Us, key: 645efc51'
+            label: Text
+            name: 645efc51
+            widget: string
+          - hint: "Original text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin leo arcu, rhoncus eu varius hendrerit, \_, key: 2cffb8f8"
+            label: Text
+            name: 2cffb8f8
+            widget: text
+          - hint: >-
+              Original text: Lorem ipsum dolor sit amet, consectetur adipiscing
+              elit. Proin leo arcu, rhoncus eu varius hendrerit, eleifend sed
+              felis. Vivamus luctus arcu orci, et aliquet mauris accumsan
+              pellentesque. Nullam faucibus ac diam vel lobortis. Sed nec tellus
+              mattis orci euismod gravida at ut turpis. Donec fringilla est non
+              blandit porta. In semper felis ante, eget pretium magna interdum
+              sed. Ut sed est porta, maximus ante ut, efficitur lectus., key:
+              -6eb11c1b
+            label: Text
+            name: '-6eb11c1b'
+            widget: text
+          - hint: 'Original text: See My Recipes, key: 2898943e'
+            label: Text
+            name: 2898943e
+            widget: string
+          - hint: 'Original text: Find a Post, key: 763bf946'
+            label: Text
+            name: 763bf946
+            widget: string
+          - hint: 'Original text: Filter, key: 7d6db798'
+            label: Text
+            name: 7d6db798
+            widget: string
+          - hint: 'Original text: Changelog, key: -31d02e8c'
+            label: Text
+            name: '-31d02e8c'
+            widget: string
+          - hint: 'Original text: Styleguide, key: 7f9ce00b'
+            label: Text
+            name: 7f9ce00b
+            widget: string
+          - hint: 'Original text: Licensing, key: -38ad4b62'
+            label: Text
+            name: '-38ad4b62'
+            widget: string
+          - hint: 'Original text: May 20, 2021, key: 3c7050aa'
+            label: Text
+            name: 3c7050aa
+            widget: string
+          - hint: 'Original text: First version released., key: 3d6903b9'
+            label: Text
+            name: 3d6903b9
+            widget: string
+          - hint: 'Original text: We''d love to hear from you!, key: -9a046ce'
+            label: Text
+            name: '-9a046ce'
+            widget: string
+          - hint: >-
+              Original text: Lorem ipsum dolor sit amet, consectetur adipiscing
+              elit. Suspendisse varius enim in eros elementum tristique. Duis
+              cursus, mi quis viverra ornare, eros dolor interdum nulla, ut
+              commodo diam libero vitae erat. Aenean faucibus nibh et justo
+              cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus
+              tristique posuere., key: -5286fc08
+            label: Text
+            name: '-5286fc08'
+            widget: text
+          - hint: 'Original text: My Recipes, key: 2e520e31'
+            label: Text
+            name: 2e520e31
+            widget: string
+          - hint: 'Original text: Back to Recipes, key: 6af2b899'
+            label: Text
+            name: 6af2b899
+            widget: string
+          - hint: 'Original text: Published on:, key: -3aa99b17'
+            label: Text
+            name: '-3aa99b17'
+            widget: string
+          - hint: 'Original text: Published On, key: -64fd3a6f'
+            label: Text
+            name: '-64fd3a6f'
+            widget: string
+          - hint: 'Original text: Published On:, key: -3aaa1337'
+            label: Text
+            name: '-3aaa1337'
+            widget: string
+          - hint: 'Original text: Serves: , key: 560dd98a'
+            label: Text
+            name: 560dd98a
+            widget: string
+          - hint: 'Original text: Prep Time: , key: 73c8d806'
+            label: Text
+            name: 73c8d806
+            widget: string
+          - hint: 'Original text: Cook Time:, key: -64d1dfcb'
+            label: Text
+            name: '-64d1dfcb'
+            widget: string
+          - hint: 'Original text: Calories: , key: -5786fb34'
+            label: Text
+            name: '-5786fb34'
+            widget: string
+          - hint: 'Original text: Ingredients, key: -19fa8f5e'
+            label: Text
+            name: '-19fa8f5e'
+            widget: string
+          - hint: 'Original text: Nutrition, key: 679c9b78'
+            label: Text
+            name: 679c9b78
+            widget: string
+          - hint: 'Original text: Kitchenware Needed, key: -4370572c'
+            label: Text
+            name: '-4370572c'
+            widget: string
+          - hint: 'Original text: Instructions, key: 36eff9c5'
+            label: Text
+            name: 36eff9c5
+            widget: string
+          - hint: 'Original text: Images, key: -7d409168'
+            label: Text
+            name: '-7d409168'
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/IGfIGP5ONV0, key:
+              2f211343
+            label: Text
+            name: 2f211343
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/rQsYZnCRU00, key:
+              -46c4eb54
+            label: Text
+            name: '-46c4eb54'
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/aK5Dt6L6_hQ, key:
+              -517419fe
+            label: Text
+            name: '-517419fe'
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/4J059aGa5s4, key:
+              -555b8e68
+            label: Text
+            name: '-555b8e68'
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/4_jhDO54BYg, key:
+              2423327c
+            label: Text
+            name: 2423327c
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/jpkfc5_d-DI, key:
+              -3853f847
+            label: Text
+            name: '-3853f847'
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/_H6wpor9mjs, key:
+              7dcaea25
+            label: Text
+            name: 7dcaea25
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/EG0CGmA0g38, key:
+              57efb701
+            label: Text
+            name: 57efb701
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/uAm1CZMdPCw, key:
+              -63b2b79b
+            label: Text
+            name: '-63b2b79b'
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/OeXcIHFwtsM, key:
+              1b61043c
+            label: Text
+            name: 1b61043c
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/N_Y88TWmGwA, key:
+              -7fafdc32
+            label: Text
+            name: '-7fafdc32'
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/W3cKs5KeT2c, key:
+              3b9a7e24
+            label: Text
+            name: 3b9a7e24
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/AWFYboL6BE4, key:
+              -738177b0
+            label: Text
+            name: '-738177b0'
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/4Yv84VgQkRM, key:
+              -5c3c12ce
+            label: Text
+            name: '-5c3c12ce'
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/ZGgIYaL9lYk, key:
+              7d027bd9
+            label: Text
+            name: 7d027bd9
+            widget: string
+          - hint: >-
+              Original text: https://unsplash.com/photos/Nx067kSCoKg, key:
+              -412d9aaa
+            label: Text
+            name: '-412d9aaa'
+            widget: string
+          - hint: 'Original text: Find a Recipe!, key: 650c71ed'
+            label: Text
+            name: 650c71ed
+            widget: string
+          - hint: 'Original text: Style Guide, key: -7aba473'
+            label: Text
+            name: '-7aba473'
+            widget: string
+          - hint: 'Original text: brand colors, key: 65102429'
+            label: Text
+            name: '65102429'
+            widget: string
+          - hint: 'Original text: PRIMARY, key: 180899e2'
+            label: Text
+            name: '180899e2'
+            widget: string
+          - hint: 'Original text: Color 1 | Red | #b25050, key: -200da65a'
+            label: Text
+            name: '-200da65a'
+            widget: string
+          - hint: 'Original text: Color 2 | Yellow | #FEF7EC, key: 643d8690'
+            label: Text
+            name: 643d8690
+            widget: string
+          - hint: 'Original text: Color 3 | Blue | #1F3E73, key: -b3730f6'
+            label: Text
+            name: '-b3730f6'
+            widget: string
+          - hint: 'Original text: Color 4 | Purple | #b3B184D, key: 769b2b80'
+            label: Text
+            name: 769b2b80
+            widget: string
+          - hint: 'Original text: SECONDARY, key: 755c8154'
+            label: Text
+            name: 755c8154
+            widget: string
+          - hint: 'Original text: Color 3 | L Blue | #1F3E73, key: 233591de'
+            label: Text
+            name: 233591de
+            widget: string
+          - hint: 'Original text: Color 6 | L Green | #b25050, key: 7cec1949'
+            label: Text
+            name: 7cec1949
+            widget: string
+          - hint: 'Original text: Typography, key: 5500514f'
+            label: Text
+            name: 5500514f
+            widget: string
+          - hint: 'Original text: DISPLAY, key: -718f5b5e'
+            label: Text
+            name: '-718f5b5e'
+            widget: string
+          - hint: 'Original text: DISPLAY XLARGE, key: -77f31cff'
+            label: Text
+            name: '-77f31cff'
+            widget: string
+          - hint: 'Original text: Heading, key: -6d5fea1e'
+            label: Text
+            name: '-6d5fea1e'
+            widget: string
+          - hint: 'Original text: DISPLAY LARGE, key: 2cfffa1d'
+            label: Text
+            name: 2cfffa1d
+            widget: string
+          - hint: 'Original text: DISPLAY MEDIUM, key: 74e62cb3'
+            label: Text
+            name: 74e62cb3
+            widget: string
+          - hint: 'Original text: DISPLAY SMALL, key: 2d67d3e9'
+            label: Text
+            name: 2d67d3e9
+            widget: string
+          - hint: 'Original text: DISPLAY XLARGE BOLD, key: -e007bc'
+            label: Text
+            name: '-e007bc'
+            widget: string
+          - hint: 'Original text: DISPLAY LARGE BOLD, key: -16b50d58'
+            label: Text
+            name: '-16b50d58'
+            widget: string
+          - hint: 'Original text: DISPLAY MEDIUM BOLD, key: -c95122e'
+            label: Text
+            name: '-c95122e'
+            widget: string
+          - hint: "Original text: DISPLAY SMALL\_BOLD, key: -3ff4e724"
+            label: Text
+            name: '-3ff4e724'
+            widget: string
+          - hint: 'Original text: BODY TEXT, key: -10ed4f15'
+            label: Text
+            name: '-10ed4f15'
+            widget: string
+          - hint: 'Original text: TEXT XLARGE, key: -88157ea'
+            label: Text
+            name: '-88157ea'
+            widget: string
+          - hint: 'Original text: Lorem ipsum dolor, key: 2dcf2cff'
+            label: Text
+            name: 2dcf2cff
+            widget: string
+          - hint: 'Original text: TEXT LARGE, key: 6a66be68'
+            label: Text
+            name: 6a66be68
+            widget: string
+          - hint: 'Original text: TEXT MEDIUM, key: -1ba80e38'
+            label: Text
+            name: '-1ba80e38'
+            widget: string
+          - hint: 'Original text: TEXT SMALL, key: 6ace9834'
+            label: Text
+            name: 6ace9834
+            widget: string
+          - hint: "Original text: LINK\_TEXT\_XLARGE, key: -7d86db10"
+            label: Text
+            name: '-7d86db10'
+            widget: string
+          - hint: 'Original text: Text Link, key: 3610230d'
+            label: Text
+            name: 3610230d
+            widget: string
+          - hint: "Original text: LINK\_TEXT\_LARGE, key: 561c3e4e"
+            label: Text
+            name: 561c3e4e
+            widget: string
+          - hint: "Original text: LINK\_TEXT\_MEDIUM, key: 6f526ea2"
+            label: Text
+            name: 6f526ea2
+            widget: string
+          - hint: "Original text: LINK\_TEXT\_SMALL, key: 5684181a"
+            label: Text
+            name: 5684181a
+            widget: string
+          - hint: 'Original text: Components, key: 5c265f36'
+            label: Text
+            name: 5c265f36
+            widget: string
+          - hint: 'Original text: BUTTONS. TAGS., key: -37be99be'
+            label: Text
+            name: '-37be99be'
+            widget: string
+          - hint: 'Original text: COOKS, key: 3d5420b'
+            label: Text
+            name: 3d5420b
+            widget: string
+          - hint: 'Original text: ICONS, key: 4245afa'
+            label: Text
+            name: 4245afa
+            widget: string
+          - hint: 'Original text: NAV & LABEL, key: 448c7c3d'
+            label: Text
+            name: 448c7c3d
+            widget: string
+          - hint: 'Original text: SOCIAL, key: -6de4f493'
+            label: Text
+            name: '-6de4f493'
+            widget: string
+          - hint: 'Original text: LISTS, key: 4516b75'
+            label: Text
+            name: 4516b75
+            widget: string
+          - hint: 'Original text: Lorem ipsum ingredient 1, key: 4db45b27'
+            label: Text
+            name: 4db45b27
+            widget: string
+          - hint: "Original text: RICH\_TEXT\_BLOCK, key: 1a028d7e"
+            label: Text
+            name: 1a028d7e
+            widget: string
+          - hint: 'Original text: RTB, key: 13e40'
+            label: Text
+            name: '13e40'
+            widget: string
+          - hint: 'Original text: What’s a Rich Text element?, key: -3c0dda4d'
+            label: Text
+            name: '-3c0dda4d'
+            widget: string
+          - hint: >-
+              Original text: The rich text element allows you to create and
+              format headings, paragraphs, blockquotes, images, and video all in
+              one place instead of having to add and format them individually.
+              Just double-click and easily create content., key: 2e633c6a
+            label: Text
+            name: 2e633c6a
+            widget: text
+          - hint: 'Original text: Static and dynamic content editing, key: 57fa6135'
+            label: Text
+            name: 57fa6135
+            widget: string
+          - hint: >-
+              Original text: A rich text element can be used with static or
+              dynamic content. For static content, just drop it into any page
+              and begin editing. For dynamic content, add a rich text field to
+              any collection and then connect a rich text element to that field
+              in the settings panel. Voila!, key: -a016b40
+            label: Text
+            name: '-a016b40'
+            widget: text
+          - hint: >-
+              Original text: How to customize formatting for each rich text,
+              key: -4bffb26e
+            label: Text
+            name: '-4bffb26e'
+            widget: string
+          - hint: >-
+              Original text: Headings, paragraphs, blockquotes, figures, images,
+              and figure captions can all be styled after a class is added to
+              the rich text element using the "When inside of" nested selector
+              system., key: -43ba1153
+            label: Text
+            name: '-43ba1153'
+            widget: text
+      - label: Links
+        name: links
+        file: cms/_data/links.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: Links
+          - hint: 'Original link: /, key: 2f'
+            label: Link
+            name: 2f
+            widget: string
+          - hint: 'Original link: /about-us/, key: -766f6c3e'
+            label: Link
+            name: '-766f6c3e'
+            widget: string
+          - hint: 'Original link: /blog/, key: 55cb89fe'
+            label: Link
+            name: 55cb89fe
+            widget: string
+          - hint: 'Original link: /recipes/, key: 8979959'
+            label: Link
+            name: '8979959'
+            widget: string
+          - hint: 'Original link: /contact/, key: 16bdc13e'
+            label: Link
+            name: 16bdc13e
+            widget: string
+          - hint: 'Original link: http://http:://www.jonmarklarson.com, key: -f76e493'
+            label: Link
+            name: '-f76e493'
+            widget: string
+          - hint: 'Original link: /template/licensing/, key: -16244ca9'
+            label: Link
+            name: '-16244ca9'
+            widget: string
+          - hint: 'Original link: /template/style-guide/, key: 68b616f5'
+            label: Link
+            name: 68b616f5
+            widget: string
+          - hint: 'Original link: /template/changelog/, key: -415dcebf'
+            label: Link
+            name: '-415dcebf'
+            widget: string
+          - hint: 'Original link: http://facebook.com, key: 63d9516b'
+            label: Link
+            name: 63d9516b
+            widget: string
+          - hint: 'Original link: http://twitter.com, key: -1ed9a5cc'
+            label: Link
+            name: '-1ed9a5cc'
+            widget: string
+          - hint: 'Original link: #, key: 23'
+            label: Link
+            name: '23'
+            widget: string
+      - label: Images
+        name: images
+        file: cms/_data/images.json
+        fields:
+          - label: Title
+            name: title
+            widget: hidden
+            default: Images
+          - label: Image
+            name: i55d35103
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 35f06602
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: i17546f46
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 698d28d6
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-2a485a80'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '0'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 926fdaa
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-11229fcd'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-1904626'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 96a0bdb
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 36c5e456
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 63d3600f
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-2475adca'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-5f0eca'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-34c847'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-539764'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-50f749'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 62955b6
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 1692a4b4
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-4cf71348'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-2d735c87'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 55f4ebcf
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 611dd774
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-4e79011'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-7f3350a'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: 38e1076f
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+          - label: Image
+            name: '-55d35103'
+            widget: object
+            fields:
+              - name: url
+                label: Image Url
+                widget: image
+                allow_multiple: false
+                required: false
+              - name: alt
+                label: Image Alt
+                widget: string
+                required: false
+local_backend: true
+publish_mode: editorial_workflow
